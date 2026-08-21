@@ -119,7 +119,7 @@
       </div>
 
       <div id="toast" class="toast" role="status" aria-live="polite"></div>
-      <div class="footer-note">Secure authentication powered by Supabase</div>
+      <div class="footer-note">Secure authentication</div>
     </section>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3"></script>
@@ -134,22 +134,5 @@
   </script>
   <script src="./app.js"></script>
   <script src="./level1-fix.js"></script>
-  <script>
-    // Keep backend connection details out of the visible UI.
-    (() => {
-      const removeUnwantedVerificationLink = () => {
-        document.querySelectorAll('a, button, p, div, span').forEach((el) => {
-          const text = (el.textContent || '').trim().toLowerCase();
-          if (text.includes('i already received a verification code')) {
-            el.remove();
-          }
-        });
-        document.querySelectorAll('a[href*="supabase.co"]').forEach((el) => el.remove());
-      };
-      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', removeUnwantedVerificationLink);
-      else removeUnwantedVerificationLink();
-      new MutationObserver(removeUnwantedVerificationLink).observe(document.body, { childList: true, subtree: true });
-    })();
-  </script>
 </body>
 </html>
