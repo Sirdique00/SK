@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#030713" />
+  <title>Sadeeq Studio — AI Music Production</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <section id="authView" class="auth-view">
+      <div class="brand">
+        <img id="brandLogo" class="brand-logo" alt="Sadeeq Studio logo" />
+        <div class="brand-name">Sadeeq Studio</div>
+        <div class="brand-subtitle">AI Music Production Studio</div>
+      </div>
+
+      <div class="auth-card">
+        <div id="welcomePanel" class="panel active">
+          <span class="eyebrow">WELCOME</span>
+          <h1>Make your music sound professional.</h1>
+          <p>Record, create and produce your music with Sadeeq Studio.</p>
+          <div class="button-stack">
+            <button class="primary" data-show="loginPanel">Login</button>
+            <button class="secondary" data-show="signupPanel">Create Account</button>
+          </div>
+        </div>
+
+        <div id="loginPanel" class="panel">
+          <button class="back" data-show="welcomePanel">← Back</button>
+          <span class="eyebrow">LOGIN</span>
+          <h2>Welcome back</h2>
+          <p>Login with the email and password of your verified account.</p>
+          <form id="loginForm" novalidate>
+            <label>Email<input id="loginEmail" type="email" autocomplete="email" required /></label>
+            <label>Password<div class="password-wrap"><input id="loginPassword" type="password" autocomplete="current-password" required /><button type="button" class="eye" data-toggle="loginPassword">◉</button></div></label>
+            <button class="primary" type="submit">Login</button>
+          </form>
+          <button class="link-button" data-show="forgotPanel">Forgot password?</button>
+          <p class="switch">Don't have an account? <button class="inline-link" data-show="signupPanel">Create Account</button></p>
+        </div>
+
+        <div id="signupPanel" class="panel">
+          <button class="back" data-show="welcomePanel">← Back</button>
+          <span class="eyebrow">SIGN UP</span>
+          <h2>Create your studio account</h2>
+          <p>Your email must be verified before the account becomes active.</p>
+          <form id="signupForm" novalidate>
+            <label>Full Name<input id="signupName" type="text" autocomplete="name" required /></label>
+            <label>Email<input id="signupEmail" type="email" autocomplete="email" required /></label>
+            <label>Password<div class="password-wrap"><input id="signupPassword" type="password" autocomplete="new-password" required /><button type="button" class="eye" data-toggle="signupPassword">◉</button></div></label>
+            <label>Confirm Password<div class="password-wrap"><input id="signupConfirm" type="password" autocomplete="new-password" required /><button type="button" class="eye" data-toggle="signupConfirm">◉</button></div></label>
+            <label class="check"><input id="terms" type="checkbox" required /><span>I agree to the Sadeeq Studio Terms & Privacy Policy.</span></label>
+            <button class="primary" type="submit">Create Account</button>
+          </form>
+          <p class="switch">Already have an account? <button class="inline-link" data-show="loginPanel">Login</button></p>
+        </div>
+
+        <div id="verifyPanel" class="panel">
+          <button class="back" data-show="signupPanel">← Back</button>
+          <span class="eyebrow">VERIFY EMAIL</span>
+          <h2>Check your email</h2>
+          <p>We sent a 6-digit code to <strong id="verifyEmailLabel"></strong>.</p>
+          <form id="verifyForm" novalidate>
+            <label>6-digit verification code<input id="signupCode" class="code-input" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="••••••" required /></label>
+            <div class="timer" id="signupTimer">02:00</div>
+            <button class="primary" type="submit">Verify Email</button>
+          </form>
+          <button id="signupResend" class="secondary hidden" type="button">Resend Code</button>
+          <p id="signupResendText" class="helper">Resend becomes available after the current code expires.</p>
+        </div>
+
+        <div id="forgotPanel" class="panel">
+          <button class="back" data-show="loginPanel">← Back</button>
+          <span class="eyebrow">PASSWORD RESET</span>
+          <h2>Forgot your password?</h2>
+          <p>Enter your registered email. We only send a reset code when the account exists.</p>
+          <form id="forgotForm" novalidate>
+            <label>Email<input id="forgotEmail" type="email" autocomplete="email" required /></label>
+            <button class="primary" type="submit">Send Reset Code</button>
+          </form>
+        </div>
+
+        <div id="resetVerifyPanel" class="panel">
+          <button class="back" data-show="forgotPanel">← Back</button>
+          <span class="eyebrow">RESET CODE</span>
+          <h2>Enter your 7-digit code</h2>
+          <p>We sent the reset code to <strong id="resetEmailLabel"></strong>.</p>
+          <form id="resetVerifyForm" novalidate>
+            <label>7-digit reset code<input id="resetCode" class="code-input" inputmode="numeric" maxlength="7" autocomplete="one-time-code" placeholder="•••••••" required /></label>
+            <div class="timer" id="resetTimer">02:00</div>
+            <button class="primary" type="submit">Verify Code</button>
+          </form>
+          <button id="resetResend" class="secondary hidden" type="button">Resend Code</button>
+          <p class="helper">A used or expired code can never be reused.</p>
+        </div>
+
+        <div id="changePasswordPanel" class="panel">
+          <span class="eyebrow">NEW PASSWORD</span>
+          <h2>Set a new password</h2>
+          <p>Your verified reset session is ready. Choose a new password.</p>
+          <form id="changePasswordForm" novalidate>
+            <label>New Password<div class="password-wrap"><input id="newPassword" type="password" autocomplete="new-password" required /><button type="button" class="eye" data-toggle="newPassword">◉</button></div></label>
+            <label>Confirm Password<div class="password-wrap"><input id="newPasswordConfirm" type="password" autocomplete="new-password" required /><button type="button" class="eye" data-toggle="newPasswordConfirm">◉</button></div></label>
+            <button class="primary" type="submit">Change Password</button>
+          </form>
+        </div>
+
+        <div id="accountPanel" class="panel">
+          <span class="success-mark">✓</span>
+          <span class="eyebrow">ACCOUNT READY</span>
+          <h2>Welcome to Sadeeq Studio</h2>
+          <p id="accountEmail"></p>
+          <div class="account-id-box"><span>Account ID</span><strong id="accountId"></strong></div>
+          <button id="logoutButton" class="secondary" type="button">Logout</button>
+          <p class="helper">Level 1 authentication is complete. The Studio workspace will be built in the next approved level.</p>
+        </div>
+      </div>
+
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+      <div class="footer-note">Secure authentication powered by Supabase</div>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
