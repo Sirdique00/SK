@@ -55,11 +55,11 @@
     clearTimeout(statusTimer)
     statusTimer = setTimeout(async () => {
       try {
-        const { data, error } = await sb.functions.invoke('request-signup-code', { body: { email } })
+        const { data, error } = await sb.functions.invoke('request-signup-code', { body: { email, check_only: true } })
         if (error) throw error
         if (data?.error) throw new Error(data.error)
         if (data?.already_active) runTimer(data.expires_in)
-        else if (data?.expires_in) runTimer(data.expires_in)
+        else { clearInterval(timerId); timer.textContent = '00:00'; resend.disabled = false; resend.classList.remove('hidden'); helper.textContent = 'No active code. You can request a new code now.' }
       } catch (_) {
         // Do not reveal whether an arbitrary email is registered from this status check.
       }
