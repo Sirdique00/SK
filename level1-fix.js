@@ -4,8 +4,6 @@
   const resend = document.getElementById('signupResend')
   if (!verifyForm || !verifyPanel || !resend) return
 
-  // The email is deliberately entered on the verification screen so the same
-  // active code can be verified from another phone, browser, or device.
   const codeLabel = verifyForm.querySelector('label')
   const emailWrap = document.createElement('label')
   emailWrap.innerHTML = 'Email<input id="verifySignupEmail" type="email" autocomplete="email" required />'
@@ -16,6 +14,7 @@
   const timer = document.getElementById('signupTimer')
   const helper = document.getElementById('signupResendText')
   let timerId = null
+  let statusTimer = null
 
   function show(id) {
     document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === id))
@@ -50,8 +49,23 @@
     tick()
     timerId = setInterval(tick, 1000)
   }
+  async function syncActiveCode() {
+    const email = emailInput.value.trim().toLowerCase()
+    if (!/^\S+@\S+\.\S+$/.test(email)) return
+    clearTimeout(statusTimer)
+    statusTimer = setTimeout(async () => {
+      try {
+        const { data, error } = await sb.functions.invoke('request-signup-code', { body: { email } })
+        if (error) throw error
+        if (data?.error) throw new Error(data.error)
+        if (data?.already_active) runTimer(data.expires_in)
+        else if (data?.expires_in) runTimer(data.expires_in)
+      } catch (_) {
+        // Do not reveal whether an arbitrary email is registered from this status check.
+      }
+    }, 250)
+  }
 
-  // Give the user a way to resume an existing verification on another device.
   const welcome = document.getElementById('welcomePanel')
   if (welcome && !document.getElementById('resumeVerificationButton')) {
     const b = document.createElement('button')
@@ -63,7 +77,9 @@
     welcome.querySelector('.button-stack')?.appendChild(b)
   }
 
-  // Replace the original verification submit handler with the cross-device-safe one.
+  emailInput.addEventListener('input', syncActiveCode)
+  emailInput.addEventListener('blur', syncActiveCode)
+
   verifyForm.addEventListener('submit', async (event) => {
     event.preventDefault()
     event.stopImmediatePropagation()
@@ -92,7 +108,6 @@
     }
   }, true)
 
-  // Replace resend with an email-only request, so it also works on a new device.
   resend.addEventListener('click', async (event) => {
     event.preventDefault()
     event.stopImmediatePropagation()
@@ -113,10 +128,12 @@
     }
   }, true)
 
-  // Keep the email label/input synchronized after the normal Sign Up flow.
   const sync = () => {
     const text = label?.textContent?.trim()
-    if (text && /^\S+@\S+\.\S+$/.test(text)) emailInput.value = text.toLowerCase()
+    if (text && /^\S+@\S+\.\S+$/.test(text)) {
+      emailInput.value = text.toLowerCase()
+      syncActiveCode()
+    }
   }
   new MutationObserver(sync).observe(label, { childList: true, characterData: true, subtree: true })
   sync()
