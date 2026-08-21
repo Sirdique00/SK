@@ -134,5 +134,22 @@
   </script>
   <script src="./app.js"></script>
   <script src="./level1-fix.js"></script>
+  <script>
+    // Keep backend connection details out of the visible UI.
+    (() => {
+      const removeUnwantedVerificationLink = () => {
+        document.querySelectorAll('a, button, p, div, span').forEach((el) => {
+          const text = (el.textContent || '').trim().toLowerCase();
+          if (text.includes('i already received a verification code')) {
+            el.remove();
+          }
+        });
+        document.querySelectorAll('a[href*="supabase.co"]').forEach((el) => el.remove());
+      };
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', removeUnwantedVerificationLink);
+      else removeUnwantedVerificationLink();
+      new MutationObserver(removeUnwantedVerificationLink).observe(document.body, { childList: true, subtree: true });
+    })();
+  </script>
 </body>
 </html>
