@@ -1,5 +1,5 @@
-const SUPABASE_URL = 'https://htaqrrgfuuuzlwvexpuu.supabase.co'
-const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_tLfFWZCmT--yqKWy2COJDQ_pj5tGS2v'
+const SUPABASE_URL = 'https://bgbpppkllakphftjmtdq.supabase.co'
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_1A_BTb7guTTl5LT-GtLxGA_a3DodfNT'
 const { createClient } = window.supabase
 const sb = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
 
