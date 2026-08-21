@@ -1,0 +1,38 @@
+name: Sync Supabase browser config
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Replace Supabase URL and publishable key
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('app.js')
+          text = path.read_text(encoding='utf-8')
+          text = re.sub(r"const SUPABASE_URL = '[^']*'", "const SUPABASE_URL = 'https://bgbpppkllakphftjmtdq.supabase.co'", text, count=1)
+          text = re.sub(r"const SUPABASE_PUBLISHABLE_KEY = '[^']*'", "const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_1A_BTb7guTTl5LT-GtLxGA_a3DodfNT'", text, count=1)
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Commit synchronized app.js
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app.js
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "Sync Supabase project configuration"
+          git push
