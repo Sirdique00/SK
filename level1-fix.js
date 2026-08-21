@@ -66,17 +66,6 @@
     }, 250)
   }
 
-  const welcome = document.getElementById('welcomePanel')
-  if (welcome && !document.getElementById('resumeVerificationButton')) {
-    const b = document.createElement('button')
-    b.id = 'resumeVerificationButton'
-    b.className = 'link-button'
-    b.type = 'button'
-    b.textContent = 'I already received a verification code'
-    b.addEventListener('click', () => show('verifyPanel'))
-    welcome.querySelector('.button-stack')?.appendChild(b)
-  }
-
   emailInput.addEventListener('input', syncActiveCode)
   emailInput.addEventListener('blur', syncActiveCode)
 
@@ -135,6 +124,6 @@
       syncActiveCode()
     }
   }
-  new MutationObserver(sync).observe(label, { childList: true, characterData: true, subtree: true })
+  if (label) new MutationObserver(sync).observe(label, { childList: true, characterData: true, subtree: true })
   sync()
 })();
