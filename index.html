@@ -123,6 +123,18 @@
     </section>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3"></script>
+  <script>
+    // Sadeeq Studio Supabase project override.
+    // This keeps the existing Level 1 application logic intact while routing
+    // every browser-side Supabase client to the current project.
+    (() => {
+      const current = window.supabase;
+      const originalCreateClient = current.createClient;
+      const projectUrl = 'https://bgbpppkllakphftjmtdq.supabase.co';
+      const publishableKey = 'sb_publishable_1A_BTb7guTTl5LT-GtLxGA_a3DodfNT';
+      current.createClient = () => originalCreateClient(projectUrl, publishableKey);
+    })();
+  </script>
   <script src="./app.js"></script>
 </body>
 </html>
